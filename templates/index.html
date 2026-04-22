@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero">
+    <h2>EduInsight</h2>
+    <p class="hero-text">
+        EduInsight is an online data collection and data analysis platform for student academic
+        and lifestyle information. It supports descriptive statistics, visualization, regression,
+        dimensionality reduction, supervised classification, and unsupervised classification.
+    </p>
+
+    <div class="home-actions">
+        <a class="btn-link" href="{{ url_for('collect') }}">Start Data Collection</a>
+        <a class="btn-link secondary" href="{{ url_for('dashboard') }}">View Dashboard</a>
+        <a class="btn-link secondary" href="{{ url_for('advanced_analysis') }}">Advanced Analysis</a>
+    </div>
+</section>
+
+<section class="features-grid">
+    <div class="card">
+        <h3>Online Collection</h3>
+        <p>Collect student information through a structured web form.</p>
+    </div>
+
+    <div class="card">
+        <h3>Descriptive Analysis</h3>
+        <p>Explore averages, distributions, and charts automatically generated from stored data.</p>
+    </div>
+
+    <div class="card">
+        <h3>Advanced Analytics</h3>
+        <p>Use regression, PCA, supervised classification, and K-Means clustering.</p>
+    </div>
+</section>
+{% endblock %}

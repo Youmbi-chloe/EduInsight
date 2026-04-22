@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Descriptive Dashboard</h2>
+
+{% if stats.total_students == 0 %}
+    <p>No data available yet. Please collect student data first.</p>
+{% else %}
+    <div class="dashboard-grid">
+        <div class="card">
+            <h3>Total Students</h3>
+            <p>{{ stats.total_students }}</p>
+        </div>
+
+        <div class="card">
+            <h3>Average Age</h3>
+            <p>{{ stats.average_age }}</p>
+        </div>
+
+        <div class="card">
+            <h3>Average Study Hours</h3>
+            <p>{{ stats.average_study_hours }}</p>
+        </div>
+
+        <div class="card">
+            <h3>Average Final Grade</h3>
+            <p>{{ stats.average_final_grade }}</p>
+        </div>
+
+        <div class="card">
+            <h3>Admitted Students</h3>
+            <p>{{ stats.admitted_count }}</p>
+        </div>
+
+        <div class="card">
+            <h3>Failed Students</h3>
+            <p>{{ stats.failed_count }}</p>
+        </div>
+    </div>
+
+    <h2 class="section-title">Charts</h2>
+
+    <div class="charts-grid">
+        <div class="chart-card">
+            <h3>Admission Status Distribution</h3>
+            <img src="{{ url_for('static', filename=charts.admission_status_chart) }}" alt="Admission Status Chart">
+        </div>
+
+        <div class="chart-card">
+            <h3>Gender Distribution</h3>
+            <img src="{{ url_for('static', filename=charts.gender_chart) }}" alt="Gender Distribution Chart">
+        </div>
+
+        <div class="chart-card">
+            <h3>Final Grade Distribution</h3>
+            <img src="{{ url_for('static', filename=charts.final_grade_histogram) }}" alt="Final Grade Histogram">
+        </div>
+
+        <div class="chart-card">
+            <h3>Study Hours vs Final Grade</h3>
+            <img src="{{ url_for('static', filename=charts.study_hours_vs_final_grade) }}" alt="Study Hours vs Final Grade">
+        </div>
+    </div>
+{% endif %}
+{% endblock %}

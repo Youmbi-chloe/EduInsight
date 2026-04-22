@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Collected Records</h2>
+
+{% if students %}
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Code</th>
+            <th>Age</th>
+            <th>Gender</th>
+            <th>Department</th>
+            <th>Level</th>
+            <th>Study Hours</th>
+            <th>Tutorial</th>
+            <th>Attendance</th>
+            <th>CA Grade</th>
+            <th>Sleep</th>
+            <th>Internet</th>
+            <th>Stress</th>
+            <th>Final Grade</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for student in students %}
+        <tr>
+            <td>{{ student.id }}</td>
+            <td>{{ student.student_code }}</td>
+            <td>{{ student.age }}</td>
+            <td>{{ student.gender }}</td>
+            <td>{{ student.department }}</td>
+            <td>{{ student.level }}</td>
+            <td>{{ student.study_hours }}</td>
+            <td>{{ student.tutorial_participation }}</td>
+            <td>{{ student.attendance_rate }}</td>
+            <td>{{ student.ca_grade }}</td>
+            <td>{{ student.sleep_hours }}</td>
+            <td>{{ student.internet_quality }}</td>
+            <td>{{ student.stress_level }}</td>
+            <td>{{ student.final_grade }}</td>
+            <td>{{ student.admission_status }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No student data available yet.</p>
+{% endif %}
+{% endblock %}

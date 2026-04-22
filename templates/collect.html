@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Collect Student Data</h2>
+
+<form method="POST" class="form-container">
+    <div class="form-group">
+        <label for="student_code">Student Code</label>
+        <input type="text" id="student_code" name="student_code" required>
+    </div>
+
+    <div class="form-group">
+        <label for="age">Age</label>
+        <input type="number" id="age" name="age" min="10" max="100" required>
+    </div>
+
+    <div class="form-group">
+        <label for="gender">Gender</label>
+        <select id="gender" name="gender" required>
+            <option value="">Select</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="department">Department</label>
+        <input type="text" id="department" name="department" required>
+    </div>
+
+    <div class="form-group">
+        <label for="level">Level</label>
+        <select id="level" name="level" required>
+            <option value="">Select</option>
+            <option value="L1">L1</option>
+            <option value="L2">L2</option>
+            <option value="L3">L3</option>
+            <option value="M1">M1</option>
+            <option value="M2">M2</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="study_hours">Study Hours per Week</label>
+        <input type="number" step="0.1" id="study_hours" name="study_hours" required>
+    </div>
+
+    <div class="form-group">
+        <label for="tutorial_participation">Tutorial Participation</label>
+        <select id="tutorial_participation" name="tutorial_participation" required>
+            <option value="">Select</option>
+            <option value="Low">Low</option>
+            <option value="Medium">Medium</option>
+            <option value="High">High</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="attendance_rate">Attendance Rate (%)</label>
+        <input type="number" step="0.1" id="attendance_rate" name="attendance_rate" min="0" max="100" required>
+    </div>
+
+    <div class="form-group">
+        <label for="ca_grade">Continuous Assessment Grade</label>
+        <input type="number" step="0.1" id="ca_grade" name="ca_grade" min="0" max="20" required>
+    </div>
+
+    <div class="form-group">
+        <label for="sleep_hours">Sleep Hours per Day</label>
+        <input type="number" step="0.1" id="sleep_hours" name="sleep_hours" min="0" max="24" required>
+    </div>
+
+    <div class="form-group">
+        <label for="internet_quality">Internet Quality</label>
+        <select id="internet_quality" name="internet_quality" required>
+            <option value="">Select</option>
+            <option value="Poor">Poor</option>
+            <option value="Average">Average</option>
+            <option value="Good">Good</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="stress_level">Stress Level</label>
+        <select id="stress_level" name="stress_level" required>
+            <option value="">Select</option>
+            <option value="Low">Low</option>
+            <option value="Medium">Medium</option>
+            <option value="High">High</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="final_grade">Final Grade</label>
+        <input type="number" step="0.1" id="final_grade" name="final_grade" min="0" max="20" required>
+    </div>
+
+    <div class="form-group">
+        <label for="admission_status">Admission Status</label>
+        <select id="admission_status" name="admission_status" required>
+            <option value="">Select</option>
+            <option value="Admitted">Admitted</option>
+            <option value="Failed">Failed</option>
+        </select>
+    </div>
+
+    <button type="submit">Save Data</button>
+</form>
+{% endblock %}

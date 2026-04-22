@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Advanced Analysis</h2>
+
+<div class="analysis-section">
+    <h3>1. Simple Linear Regression</h3>
+    <p>This model predicts the final grade from study hours.</p>
+
+    {% if simple_regression.available %}
+        <div class="analysis-card">
+            <p><strong>Equation:</strong> {{ simple_regression.equation }}</p>
+            <p><strong>Coefficient:</strong> {{ simple_regression.coefficient }}</p>
+            <p><strong>Intercept:</strong> {{ simple_regression.intercept }}</p>
+            <p><strong>R² Score:</strong> {{ simple_regression.r2_score }}</p>
+        </div>
+
+        <div class="chart-card">
+            <h3>Regression Plot</h3>
+            <img src="{{ url_for('static', filename=simple_regression.chart) }}" alt="Simple Linear Regression Chart">
+        </div>
+    {% else %}
+        <div class="analysis-card">
+            <p>{{ simple_regression.message }}</p>
+        </div>
+    {% endif %}
+</div>
+
+<div class="analysis-section">
+    <h3>2. Multiple Linear Regression</h3>
+    <p>
+        This model predicts the final grade from study hours, attendance rate,
+        continuous assessment grade, and sleep hours.
+    </p>
+
+    {% if multiple_regression.available %}
+        <div class="analysis-card">
+            <p><strong>Equation:</strong> {{ multiple_regression.equation }}</p>
+            <p><strong>Intercept:</strong> {{ multiple_regression.intercept }}</p>
+            <p><strong>R² Score:</strong> {{ multiple_regression.r2_score }}</p>
+
+            <h4>Coefficients</h4>
+            <ul>
+                <li><strong>Study Hours:</strong> {{ multiple_regression.coefficients.study_hours }}</li>
+                <li><strong>Attendance Rate:</strong> {{ multiple_regression.coefficients.attendance_rate }}</li>
+                <li><strong>CA Grade:</strong> {{ multiple_regression.coefficients.ca_grade }}</li>
+                <li><strong>Sleep Hours:</strong> {{ multiple_regression.coefficients.sleep_hours }}</li>
+            </ul>
+        </div>
+    {% else %}
+        <div class="analysis-card">
+            <p>{{ multiple_regression.message }}</p>
+        </div>
+    {% endif %}
+</div>
+
+<div class="analysis-section">
+    <h3>3. Dimensionality Reduction with PCA</h3>
+    <p>
+        PCA reduces several numeric variables to two principal components
+        for easier visualization.
+    </p>
+
+    {% if pca_result.available %}
+        <div class="analysis-card">
+            <p><strong>Explained Variance of PC1:</strong> {{ pca_result.pc1_variance }}</p>
+            <p><strong>Explained Variance of PC2:</strong> {{ pca_result.pc2_variance }}</p>
+            <p><strong>Total Explained Variance:</strong> {{ pca_result.total_variance }}</p>
+        </div>
+
+        <div class="chart-card">
+            <h3>PCA Projection</h3>
+            <img src="{{ url_for('static', filename=pca_result.chart) }}" alt="PCA Projection Chart">
+        </div>
+    {% else %}
+        <div class="analysis-card">
+            <p>{{ pca_result.message }}</p>
+        </div>
+    {% endif %}
+</div>
+
+<div class="analysis-section">
+    <h3>4. Supervised Classification</h3>
+    <p>
+        This model predicts admission status from age, study hours,
+        attendance rate, continuous assessment grade, and sleep hours.
+    </p>
+
+    {% if supervised_result.available %}
+        <div class="analysis-card">
+            <p><strong>Accuracy:</strong> {{ supervised_result.accuracy }}</p>
+            <p><strong>Classes:</strong> {{ supervised_result.classes | join(', ') }}</p>
+        </div>
+
+        <div class="chart-card">
+            <h3>Confusion Matrix</h3>
+            <img src="{{ url_for('static', filename=supervised_result.chart) }}" alt="Confusion Matrix">
+        </div>
+    {% else %}
+        <div class="analysis-card">
+            <p>{{ supervised_result.message }}</p>
+        </div>
+    {% endif %}
+</div>
+
+<div class="analysis-section">
+    <h3>5. Unsupervised Classification with K-Means</h3>
+    <p>
+        This method automatically groups similar student profiles without
+        using predefined labels.
+    </p>
+
+    {% if unsupervised_result.available %}
+        <div class="analysis-card">
+            <p><strong>Number of Clusters:</strong> {{ unsupervised_result.n_clusters }}</p>
+
+            <h4>Cluster Sizes</h4>
+            <ul>
+                {% for cluster_name, count in unsupervised_result.cluster_counts.items() %}
+                    <li><strong>{{ cluster_name }}:</strong> {{ count }} student(s)</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="chart-card">
+            <h3>K-Means Cluster Visualization</h3>
+            <img src="{{ url_for('static', filename=unsupervised_result.chart) }}" alt="K-Means Clustering">
+        </div>
+    {% else %}
+        <div class="analysis-card">
+            <p>{{ unsupervised_result.message }}</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
