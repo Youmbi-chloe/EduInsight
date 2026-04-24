@@ -1,19 +1,37 @@
+import os
 import sqlite3
+from contextlib import contextmanager
 
-DB_NAME = "students.db"
+DATABASE_URL = os.getenv("DATABASE_URL")
+SQLITE_DB_NAME = "students.db"
 
+
+def using_postgres():
+    return bool(DATABASE_URL)
+
+
+@contextmanager
 def get_connection():
-    conn = sqlite3.connect(DB_NAME)
-    conn.row_factory = sqlite3.Row
-    return conn
+    if using_postgres():
+        from psycopg import connect
+        conn = connect(DATABASE_URL)
+        try:
+            yield conn
+        finally:
+            conn.close()
+    else:
+        conn = sqlite3.connect(SQLITE_DB_NAME)
+        conn.row_factory = sqlite3.Row
+        try:
+            yield conn
+        finally:
+            conn.close()
+
 
 def init_db():
-    conn = get_connection()
-    cursor = conn.cursor()
-
-    cursor.execute("""
+    create_table_sql = """
         CREATE TABLE IF NOT EXISTS students (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id SERIAL PRIMARY KEY,
             student_code TEXT NOT NULL,
             age INTEGER NOT NULL,
             gender TEXT NOT NULL,
@@ -29,16 +47,43 @@ def init_db():
             final_grade REAL NOT NULL,
             admission_status TEXT NOT NULL
         )
-    """)
+    """
 
-    conn.commit()
-    conn.close()
+    if not using_postgres():
+        create_table_sql = """
+            CREATE TABLE IF NOT EXISTS students (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                student_code TEXT NOT NULL,
+                age INTEGER NOT NULL,
+                gender TEXT NOT NULL,
+                department TEXT NOT NULL,
+                level TEXT NOT NULL,
+                study_hours REAL NOT NULL,
+                tutorial_participation TEXT NOT NULL,
+                attendance_rate REAL NOT NULL,
+                ca_grade REAL NOT NULL,
+                sleep_hours REAL NOT NULL,
+                internet_quality TEXT NOT NULL,
+                stress_level TEXT NOT NULL,
+                final_grade REAL NOT NULL,
+                admission_status TEXT NOT NULL
+            )
+        """
+
+    with get_connection() as conn:
+        with conn.cursor() if using_postgres() else conn:
+            if using_postgres():
+                cur = conn.cursor()
+                cur.execute(create_table_sql)
+                conn.commit()
+                cur.close()
+            else:
+                conn.execute(create_table_sql)
+                conn.commit()
+
 
 def insert_student(data):
-    conn = get_connection()
-    cursor = conn.cursor()
-
-    cursor.execute("""
+    insert_sql = """
         INSERT INTO students (
             student_code,
             age,
@@ -55,8 +100,10 @@ def insert_student(data):
             final_grade,
             admission_status
         )
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    """, (
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+    """
+
+    params = (
         data["student_code"],
         data["age"],
         data["gender"],
@@ -71,17 +118,33 @@ def insert_student(data):
         data["stress_level"],
         data["final_grade"],
         data["admission_status"]
-    ))
+    )
 
-    conn.commit()
-    conn.close()
+    if using_postgres():
+        with get_connection() as conn:
+            cur = conn.cursor()
+            cur.execute(insert_sql, params)
+            conn.commit()
+            cur.close()
+    else:
+        sqlite_sql = insert_sql.replace("%s", "?")
+        with get_connection() as conn:
+            conn.execute(sqlite_sql, params)
+            conn.commit()
+
 
 def get_all_students():
-    conn = get_connection()
-    cursor = conn.cursor()
+    query = "SELECT * FROM students ORDER BY id DESC"
 
-    cursor.execute("SELECT * FROM students ORDER BY id DESC")
-    students = cursor.fetchall()
-
-    conn.close()
-    return students
+    if using_postgres():
+        with get_connection() as conn:
+            cur = conn.cursor()
+            cur.execute(query)
+            columns = [desc[0] for desc in cur.description]
+            rows = cur.fetchall()
+            cur.close()
+            return [dict(zip(columns, row)) for row in rows]
+    else:
+        with get_connection() as conn:
+            rows = conn.execute(query).fetchall()
+            return rows
