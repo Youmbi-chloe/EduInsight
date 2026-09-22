@@ -132,11 +132,15 @@ If a PostgreSQL connection is provided through the `DATABASE_URL` environment va
 
 ### Advanced analysis
 
-![Advanced analysis](screenshots/advanced-analysis.png)
+![Advanced analysis - regression](screenshots/advanced-analysis-1.png)
+
+![Advanced analysis - PCA](screenshots/advanced-analysis-2.png)
 
 ### Classification
 
-![Classification](screenshots/classification.png)
+![Classification](screenshots/classification-1.png)
+
+![Classification confusion matrix](screenshots/classification-2.png)
 
 ## Note
 
