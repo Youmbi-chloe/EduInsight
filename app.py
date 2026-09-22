@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
-from utils.database import init_db, insert_student, get_all_students
+from utils.database import init_db, insert_student, get_all_students, using_postgres
 from utils.analytics import (
     compute_dashboard_stats,
     generate_dashboard_charts,
@@ -14,6 +14,7 @@ app = Flask(__name__)
 app.secret_key = "eduinsight_secret_key"
 
 init_db()
+print("Using PostgreSQL:" if using_postgres() else "Using SQLite locally")
 
 @app.route("/")
 def home():
