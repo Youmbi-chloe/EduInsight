@@ -87,7 +87,7 @@ EduInsight/
 Clone the repository and move into the project folder:
 
 ```bash
-git clone <repository-url>
+git clone <https://github.com/Youmbi-chloe/EduInsight.git>
 cd EduInsight
 ```
 
