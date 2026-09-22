@@ -3,3 +3,6 @@ __pycache__/
 *.pyc
 students.db
 static/plots/*.png
+.venv/
+*.odt
+.~lock.*
